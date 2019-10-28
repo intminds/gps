@@ -26,12 +26,21 @@ class Point implements \IteratorAggregate, \ArrayAccess
      */
     public $props = [];
 
-    public function __construct(float $lat, float $lng, ?float $alt = null, int $time = null)
+    public function __construct(float $lat, float $lng, ?float $alt = null, ?int $time = null)
     {
         $this->lat = $lat;
         $this->lng = $lng;
         $this->alt = $alt;
         $this->time = $time;
+    }
+
+    public function __clone()
+    {
+        foreach ($this->props as $propName => $prop) {
+            if (is_object($prop)) {
+                $this->props[$propName] = clone $prop;
+            }
+        }
     }
 
     /**
@@ -46,14 +55,14 @@ class Point implements \IteratorAggregate, \ArrayAccess
         yield from $this->props;
     }
 
-    public function offsetExists($offset): bool
+    public function offsetExists($propName): bool
     {
-        return in_array($offset, ["lat", "lng", "alt", "time"]) || isset($this->props[$offset]) && !is_null($this->props[$offset]);
+        return in_array($propName, ["lat", "lng", "alt", "time"]) || isset($this->props[$propName]);
     }
 
-    public function offsetGet($offset)
+    public function offsetGet($propName)
     {
-        switch ($offset) {
+        switch ($propName) {
             case "lat":
                 return $this->lat;
             case "lng":
@@ -63,13 +72,17 @@ class Point implements \IteratorAggregate, \ArrayAccess
             case "time":
                 return $this->time;
             default:
-                return $this->props[$offset] ?? null;
+                if (isset($this->props[$propName])) {
+                    return $this->props[$propName];
+                } else {
+                    throw new \OutOfRangeException();
+                }
         }
     }
 
-    public function offsetSet($offset, $value): void
+    public function offsetSet($propName, $value): void
     {
-        switch ($offset) {
+        switch ($propName) {
             case "lat":
                 $this->lat = $value;
                 break;
@@ -83,15 +96,15 @@ class Point implements \IteratorAggregate, \ArrayAccess
                 $this->time = $value;
                 break;
             default:
-                $this->props[$offset] = $value;
+                $this->props[$propName] = $value;
         }
     }
 
-    public function offsetUnset($offset): void
+    public function offsetUnset($propName): void
     {
-        if (in_array($offset, ["lat", "lng", "alt", "time"])) {
+        if (in_array($propName, ["lat", "lng", "alt", "time"])) {
             throw new \OutOfRangeException();
         }
-        unset($this->props[$offset]);
+        unset($this->props[$propName]);
     }
 }

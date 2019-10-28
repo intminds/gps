@@ -22,21 +22,48 @@ final class PointTest extends TestCase
         $this->assertNull($p->time);
     }
 
-    public function testArrayAccess()
+    public function testArrayAccessBasic()
     {
         $t = time();
         $p = new Point(4.0, 5.0, 6.0, $t);
         $p["distance"] = 1234;
         $this->assertEquals(1234, $p["distance"]);
-        $this->assertNull($p["XXX"]);
         $this->assertTrue(isset($p["alt"]));
         $this->assertTrue(isset($p["distance"]));
         $this->assertFalse(isset($p["XXX"]));
         unset($p["XXX"]); // Should not throw
         unset($p["distance"]);
-        $this->assertNull($p["distance"]);
+        $this->assertFalse(isset($p["distance"]));
         $this->expectException(\OutOfRangeException::class);
         unset($p["lat"]);
+    }
+
+    public function testArrayAccessNonExistingKey()
+    {
+        $p = new Point(4.0, 5.0, 6.0);
+        $p["distance"] = 1234;
+        $this->expectException(\OutOfRangeException::class);
+        $p["XXX"];
+    }
+
+    public function testArrayAccessNullMainProps()
+    {
+        $p = new Point(1, 2);
+        $this->assertNull($p["alt"]);
+        $this->assertNull($p["time"]);
+    }
+
+    public function testArrayAccessMainProps()
+    {
+        $p = new Point(1, 2);
+        $p["lat"] = 100;
+        $p["lng"] = 200;
+        $p["alt"] = 300;
+        $p["time"] = 400;
+        $this->assertEqualsWithDelta(100, $p["lat"], 0.01);
+        $this->assertEqualsWithDelta(200, $p["lng"], 0.01);
+        $this->assertEqualsWithDelta(300, $p["alt"], 0.01);
+        $this->assertEqualsWithDelta(400, $p["time"], 0.01);
     }
 
     public function testTraversable()
@@ -50,5 +77,13 @@ final class PointTest extends TestCase
             "time" => null,
             "g" => "G",
         ], iterator_to_array($p));
+    }
+
+    public function testClone()
+    {
+        $p = new Point(1, 1);
+        $p["q"] = new \stdClass();
+        $p2 = clone $p;
+        $this->assertNotSame($p["q"], $p2["q"]);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Intminds\GPS;
 
-class Segment
+class Segment implements \IteratorAggregate
 {
     /**
      * @var string
@@ -17,6 +17,15 @@ class Segment
     {
         $this->title = $title;
         $this->points = new Points();
+    }
+
+    /**
+     * @return \Traversable
+     */
+    public function getIterator()
+    {
+        yield "title" => $this->title;
+        yield "points" => $this->points;
     }
 
     public function setTitle(string $title): void
@@ -37,20 +46,5 @@ class Segment
     public function getPoints(): Points
     {
         return $this->points;
-    }
-
-    public function getStart(): ?Point
-    {
-        return $this->points->getStart();
-    }
-
-    public function getFinish(): ?Point
-    {
-        return $this->points->getFinish();
-    }
-
-    public function appendPoint(Point $point): void
-    {
-        $this->points->appendPoint($point);
     }
 }

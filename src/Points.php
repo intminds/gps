@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace Intminds\GPS;
 
-use Intminds\GPS\Calc\DistanceCalcInterface;
-
 class Points implements \IteratorAggregate, \Countable, \ArrayAccess
 {
     /**
@@ -19,6 +17,13 @@ class Points implements \IteratorAggregate, \Countable, \ArrayAccess
      * @var Point
      */
     protected $finish = null;
+
+    public function __clone()
+    {
+        foreach ($this->points as $idx => $point) {
+            $this->points[$idx] = clone $point;
+        }
+    }
 
     /**
      * @return \Traversable|Point[]
@@ -51,9 +56,15 @@ class Points implements \IteratorAggregate, \Countable, \ArrayAccess
             throw new \UnexpectedValueException("Instance of Point expected, {$type} received{$offsetInfo}");
         }
         if (is_null($offset)) {
-            $this->points[] = $value;
+            $this->appendPoint($value);
         } elseif ($offset <= sizeof($this->points)) {
             $this->points[$offset] = $value;
+            if (sizeof($this->points) - 1 === $offset) {
+                $this->finish = $value;
+            }
+            if (0 === $offset) {
+                $this->start = $value;
+            }
         } else {
             throw new \OutOfRangeException("Indices of Points must not have gaps");
         }
@@ -65,6 +76,14 @@ class Points implements \IteratorAggregate, \Countable, \ArrayAccess
             unset($this->points[$offset]);
         } else {
             throw new \OutOfRangeException("Indices of Points must not have gaps");
+        }
+    }
+
+    public function replaceWith(Points $points): void
+    {
+        $this->points = [];
+        foreach ($points as $point) {
+            $this->appendPoint($point);
         }
     }
 
@@ -81,21 +100,20 @@ class Points implements \IteratorAggregate, \Countable, \ArrayAccess
     public function appendPoint(Point $point): Points
     {
         $this->points[] = $point;
-        if (is_null($this->start)) {
+        if (1 === sizeof($this->points)) {
             $this->start = $point;
         }
         $this->finish = $point;
         return $this;
     }
 
-    public function fillDistances(DistanceCalcInterface $distanceCalc, float $startDistance = 0): Points
+    public function allPointsHaveProp($propName): bool
     {
-        $distanceCalc->fillPointsDistances($this, $startDistance);
-        return $this;
-    }
-
-    public function hasDistancesFilled(): bool
-    {
-        return is_null($this->finish) || !is_null($this->finish->distance);
+        foreach ($this->points as $point) {
+            if (!isset($point[$propName]) || is_null($point[$propName])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
