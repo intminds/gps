@@ -25,14 +25,17 @@ Stable version is coming soon...
   * `ThinOutProcessor` removes points which are too close to each other (used to reduce a track size without significant information loss). 
   * `TriangularElevationFilterProcessor` smooths points' altitudes using a triangular window filter.
   * You can write more processors yourself.
+* Track, Segment, Points and Point classes implement \Traversable which can be used for easy conversion into JSON-compatible format.
 * 100% test coverage.
 
 ### Not implemented
 
 * &#10060; Support of .gpx Trails and Waypoints (`<rte>` and `<wpt>` tags).
 * &#10060; Creating .gpx file back from GPXFile, Track, Segment and so on. 
-* &#10060; Smoothing of lat/lng.
- 
+* &#10060; Smoothing of lat/lng for better distance calculation.
+
+We recommend using https://github.com/Sibyx/phpGPX if you need any of the above. Nevertheless, the phpGPX lib looks for us less extendable if you need to implement your own math.
+
 ## Basic usage example
 
 Run `php examples/basic.php` 
@@ -84,7 +87,7 @@ echo "How far the finish point is from the start point: {$movement} m\n\n";
 
 ## Elevation calculation
 
-There is a naive approach for elevation gain calculation. You can compare every point's altitude with the previous point's altitude, and if the difference is greater than zero, add it into total elevation gain.
+There is a naive approach for elevation gain calculation. You can compare every point's altitude with the previous point's altitude, and if the difference is greater than zero, add it into the total elevation gain.
 
 Such naive approach does not work well. If you go/run/ride along a flat surface, small non-important altitude changes sum up into big elevation gain and loss.
 
@@ -127,5 +130,5 @@ echo "Elevation gain (advanced approach): {$ele->elevationGain} m, loss: {$ele->
 
 Algorithm adequacy check:
 
-For the `examples/run.gpx` file a popular app Strava gives elevation gain 229 m. It's slightly less than we received above (245 m). You can play with parameters but in our opinion Strava does too aggressive smoothing and lessens the total elevation gain.  
+For the `examples/run.gpx` file a popular app Strava gives elevation gain 229 m. It's slightly less than we received above (245 m). You can play with parameters but in our opinion Strava does too aggressive smoothing which lessens the total elevation gain. The values `$windowSize = 60.0` and `$minimalChange = 2.0` are based on comparison of 5 different tracks with Strava and manual elevation gain calculation for some tracks.    
 
