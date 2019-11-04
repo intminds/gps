@@ -23,7 +23,7 @@ Stable version is coming soon...
 * Support of "processors" which can assign properties to track points (like distance, direction, speed), add and delete points from a track. Now implemented:
   * `DistanceProcessor` assigns a "distance" property to each track point (distance from the start point).
   * `ThinOutProcessor` removes points which are too close to each other (used to reduce a track size without significant information loss). 
-  * `TriangleElevationFilterProcessor` smooths points' altitudes using a triangular window filter.
+  * `TriangularElevationFilterProcessor` smooths points' altitudes using a triangular window filter.
   * You can write more processors yourself.
 * 100% test coverage.
 
@@ -81,3 +81,49 @@ $movement = Defaults::getMovementCalc()->getDistance($track->getStart(), $track-
 echo "How far the finish point is from the start point: {$movement} m\n\n";
 // How far the finish point is from the start point: 21.724416911272 m
 ```
+
+## Elevation calculation
+
+There is a naive approach for elevation gain calculation. You can compare every point's altitude with the previous point's altitude, and if the difference is greater than zero, add it into total elevation gain.
+
+Such naive approach does not work well. If you go/run/ride along a flat surface, small non-important altitude changes sum up into big elevation gain and loss.
+
+Our experiments show that this is a no-so-bad algorithm for elevation calculation (run `php examples/elevation.php`):
+
+```php
+declare(strict_types=1);
+
+namespace Intminds\GPS;
+
+use Intminds\GPS\Elevation\ElementaryElevationCalc;
+use Intminds\GPS\Elevation\HysteresisElevationCalc;
+use Intminds\GPS\Processors\DistanceProcessor;
+use Intminds\GPS\Processors\TriangularElevationFilterProcessor;
+
+require_once "../vendor/autoload.php";
+
+$file = GPXFile::createFromFile(dirname(__FILE__) . "/run.gpx");
+$track = $file->flatten();
+
+// NAIVE APPROACH
+$ele = $track->calcElevation(new ElementaryElevationCalc());
+echo "Elevation gain (naive approach): {$ele->elevationGain} m, loss: {$ele->elevationLoss} m\n";
+// Elevation gain (naive approach): 324.1 m, loss: 325.9 m
+
+// ADVANCED APPROACH
+// Assigning a distance from the start to each point.
+// This is required by TriangularElevationFilterProcessor.
+// If it's not done, MissingPropException is raised.
+$proc1 = new DistanceProcessor();
+$track->applyProcessor($proc1);
+// Smoothing data with triangular window filter (triangle base length is 60m)
+$proc2 = new TriangularElevationFilterProcessor($windowSize = 60.0);
+$track->applyProcessor($proc2);
+// Applying a special elevation calculator which omits any altitude variations which are less than $minimalChange.
+$ele = $track->calcElevation(new HysteresisElevationCalc($minimalChange = 2.0));
+echo "Elevation gain (advanced approach): {$ele->elevationGain} m, loss: {$ele->elevationLoss} m\n";
+// Elevation gain (advanced approach): 245.37668979092 m, loss: 247.98170342056 m
+```
+
+This algorithm gives elevation gain close to what you have in Strava app (for the `examples/run.gpx` file it's 229 m).
+
