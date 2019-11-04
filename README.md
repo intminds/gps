@@ -78,7 +78,7 @@ Stable version is coming soon...
 
 ### Not implemented
 
-* <span style="color: #600;">Support of .gpx Trails and Waypoints (`<rte>` and `<wpt>` tags).</span>
-* <span style="color: #600;">Creating .gpx file back from GPXFile, Track, Segment and so on.</span> 
-* <span style="color: #600;">Smoothing of lat/lng.</span>
+* &#10060; Support of .gpx Trails and Waypoints (`<rte>` and `<wpt>` tags).
+* &#10060; Creating .gpx file back from GPXFile, Track, Segment and so on. 
+* &#10060; Smoothing of lat/lng.
  
