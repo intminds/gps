@@ -1,12 +1,4 @@
-# gps
-Lib for parsing .gpx files and working with GPS tracks.
-
-The main goal of this library is to be extendable.
-Almost all algorithms are implemented as strategies and can be replaced (i.e. distance calculation, elevation calculation, smoothing filters, etc.) 
-
-## Basic usage
-
-```php
+<?php
 declare(strict_types=1);
 
 namespace Intminds\GPS;
@@ -38,5 +30,3 @@ echo "- time = " . date("Y-m-d H:i:s", $track->getStart()->time) . "\n";
 
 $movement = Defaults::getMovementCalc()->getDistance($track->getStart(), $track->getFinish());
 echo "How far the finish point is from the start point: {$movement} m";
-
-```
