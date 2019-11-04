@@ -1,4 +1,7 @@
 # gps
+
+[![Build Status](https://travis-ci.org/intminds/gps.svg?branch=master)](https://travis-ci.org/intminds/gps)
+
 Lib for parsing .gpx files and working with GPS tracks.
 
 The main goal of this library is to be extendable.
