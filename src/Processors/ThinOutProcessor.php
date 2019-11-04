@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace Intminds\GPS\Processors;
 
 use Intminds\GPS\Defaults;
-use Intminds\GPS\Distance\DistanceCalcInterface;
+use Intminds\GPS\Movement\MovementCalcInterface;
 use Intminds\GPS\Points;
 
 class ThinOutProcessor extends AbstractProcessor implements ProcessorInterface
@@ -14,14 +14,14 @@ class ThinOutProcessor extends AbstractProcessor implements ProcessorInterface
      */
     protected $minDistance;
     /**
-     * @var DistanceCalcInterface
+     * @var MovementCalcInterface
      */
-    protected $distanceCalc;
+    protected $movementCalc;
 
-    public function __construct(float $minDistance = 15.0, DistanceCalcInterface $distanceCalc = null)
+    public function __construct(float $minDistance = 15.0, MovementCalcInterface $movementCalc = null)
     {
         $this->minDistance = $minDistance;
-        $this->distanceCalc = $distanceCalc ?: Defaults::getDistanceCalc();
+        $this->movementCalc = $movementCalc ?: Defaults::getMovementCalc();
     }
 
     protected function applyToPoints(Points $points): void
@@ -35,7 +35,7 @@ class ThinOutProcessor extends AbstractProcessor implements ProcessorInterface
         $lastPoint = $points[0];
         for ($i = 1; $i < $count - 1; ++$i) {
             $point = $points[$i];
-            if ($this->distanceCalc->getDistance($lastPoint, $point) >= $this->minDistance) {
+            if ($this->movementCalc->getDistance($lastPoint, $point) >= $this->minDistance) {
                 $newPoints[] = $point;
                 $lastPoint = $point;
             }

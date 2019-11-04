@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Intminds\GPS\Calc;
+namespace Intminds\GPS\Processors;
 
-use Intminds\GPS\Distance\RoundEarthDistanceCalc;
+use Intminds\GPS\Movement\RoundEarthMovementCalc;
 use Intminds\GPS\Point;
 use Intminds\GPS\Points;
-use Intminds\GPS\Processors\DistanceProcessor;
 use Intminds\GPS\Segment;
 use Intminds\GPS\Track;
 use PHPUnit\Framework\TestCase;
@@ -29,7 +28,7 @@ final class DistanceProcessorTest extends TestCase
         $track->appendSegment((new Segment())->setPoints($points1));
         $track->appendSegment((new Segment())->setPoints($points2));
 
-        $proc = new DistanceProcessor(new RoundEarthDistanceCalc());
+        $proc = new DistanceProcessor(new RoundEarthMovementCalc());
         $proc->applyToTrack($track);
         $this->assertEqualsWithDelta(0, $points1[0]["distance"] / 1000, 1);
         $this->assertEqualsWithDelta(111, $points1[1]["distance"] / 1000, 1);
@@ -63,7 +62,7 @@ final class DistanceProcessorTest extends TestCase
         $track->appendSegment((new Segment())->setPoints($points3));
         $track->appendSegment((new Segment())->setPoints($points4));
 
-        $proc = new DistanceProcessor(new RoundEarthDistanceCalc());
+        $proc = new DistanceProcessor(new RoundEarthMovementCalc());
         $proc->applyToTrack($track);
         $this->assertEqualsWithDelta(0, $points1[0]["distance"] / 1000, 1);
         $this->assertEqualsWithDelta(111, $points1[1]["distance"] / 1000, 1);

@@ -1,13 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Intminds\GPS\Calc;
+namespace Intminds\GPS\Processors;
 
 use Intminds\GPS\Point;
 use Intminds\GPS\Points;
-use Intminds\GPS\Processors\DistanceProcessor;
-use Intminds\GPS\Processors\MissingPropException;
-use Intminds\GPS\Processors\TriangleElevationFilterProcessor;
 use Intminds\GPS\Segment;
 use Intminds\GPS\Track;
 use PHPUnit\Framework\TestCase;
@@ -32,14 +29,17 @@ final class TriangleElevationFilterProcessorTest extends TestCase
 
         $proc = new DistanceProcessor();
         $proc->applyToTrack($track);
-        // Triangle has a 444km base
+        // The triangle averaging window has a 444km base
         // Distance between points is 111km
-        // I.e. adjacent points have averaging weight = 0.5
+        // => Adjacent points have averaging weight = 0.5
         $proc = new TriangleElevationFilterProcessor(444000);
         $proc->applyToTrack($track);
         $this->assertEqualsWithDelta(40, $points1[0]->alt, 0.1); // (10x1 + 100x0.5) / (1 + 0.5)
         $this->assertEqualsWithDelta(55, $points1[1]->alt, 0.1); // (100x1 + 10x0.5 + 10x0.5) / (1 + 0.5 + 0.5)
         $this->assertEqualsWithDelta(40, $points1[2]->alt, 0.1);
+        $this->assertEqualsWithDelta(43.3, $points2[0]->alt, 0.1); // (40x1 + 50x0.5) / (1 + 0.5)
+        $this->assertEqualsWithDelta(50, $points2[1]->alt, 0.1); // (50x1 + 40x0.5 + 60x0.5) / (1 + 0.5 + 0.5)
+        $this->assertEqualsWithDelta(56.7, $points2[2]->alt, 0.1);
     }
 
     public function testClosePointsAveraging()

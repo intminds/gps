@@ -1,12 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Intminds\GPS\Calc;
+namespace Intminds\GPS\Processors;
 
-use Intminds\GPS\Distance\RoundEarthDistanceCalc;
+use Intminds\GPS\Movement\RoundEarthMovementCalc;
 use Intminds\GPS\Point;
 use Intminds\GPS\Points;
-use Intminds\GPS\Processors\ThinOutProcessor;
 use Intminds\GPS\Segment;
 use Intminds\GPS\Track;
 use PHPUnit\Framework\TestCase;
@@ -29,11 +28,11 @@ final class ThinOutProcessorTest extends TestCase
         $track->appendSegment((new Segment())->setPoints(clone $points1));
         $track->appendSegment((new Segment())->setPoints(clone $points2));
 
-        $proc = new ThinOutProcessor(15.0, new RoundEarthDistanceCalc());
+        $proc = new ThinOutProcessor(15.0, new RoundEarthMovementCalc());
         $proc->applyToTrack($track);
         $this->assertEquals($points1, $track->getSegments()[0]->getPoints());
 
-        $proc = new ThinOutProcessor(200000.0, new RoundEarthDistanceCalc());
+        $proc = new ThinOutProcessor(200000.0, new RoundEarthMovementCalc());
         $proc->applyToTrack($track);
         $this->assertEquals([$points1[0], $points1[2]], iterator_to_array($track->getSegments()[0]->getPoints()));
     }
@@ -45,7 +44,7 @@ final class ThinOutProcessorTest extends TestCase
         $track = new Track();
         $track->appendSegment((new Segment())->setPoints(clone $points));
 
-        $proc = new ThinOutProcessor(15.0, new RoundEarthDistanceCalc());
+        $proc = new ThinOutProcessor(15.0, new RoundEarthMovementCalc());
         $proc->applyToTrack($track);
         $this->assertEquals($points, $track->getSegments()[0]->getPoints());
     }
@@ -58,7 +57,7 @@ final class ThinOutProcessorTest extends TestCase
         $track = new Track();
         $track->appendSegment((new Segment())->setPoints(clone $points));
 
-        $proc = new ThinOutProcessor(200000.0, new RoundEarthDistanceCalc());
+        $proc = new ThinOutProcessor(200000.0, new RoundEarthMovementCalc());
         $proc->applyToTrack($track);
         $this->assertEquals($points, $track->getSegments()[0]->getPoints());
     }

@@ -4,20 +4,20 @@ declare(strict_types=1);
 namespace Intminds\GPS\Processors;
 
 use Intminds\GPS\Defaults;
-use Intminds\GPS\Distance\DistanceCalcInterface;
+use Intminds\GPS\Movement\MovementCalcInterface;
 use Intminds\GPS\Points;
 use Intminds\GPS\Track;
 
 class DistanceProcessor implements ProcessorInterface
 {
     /**
-     * @var DistanceCalcInterface
+     * @var MovementCalcInterface
      */
-    protected $distanceCalc;
+    protected $movementCalc;
 
-    public function __construct(DistanceCalcInterface $distanceCalc = null)
+    public function __construct(MovementCalcInterface $movementCalc = null)
     {
-        $this->distanceCalc = $distanceCalc ?: Defaults::getDistanceCalc();
+        $this->movementCalc = $movementCalc ?: Defaults::getMovementCalc();
     }
 
     protected function applyToPoints(Points $points, float $startDistance): void
@@ -31,7 +31,7 @@ class DistanceProcessor implements ProcessorInterface
         }
         $distance = $startDistance;
         for ($i = 1; $i < $count; ++$i) {
-            $distance += $this->distanceCalc->getDistance($points[$i], $points[$i - 1]);
+            $distance += $this->movementCalc->getDistance($points[$i], $points[$i - 1]);
             $points[$i]["distance"] = $distance;
         }
     }

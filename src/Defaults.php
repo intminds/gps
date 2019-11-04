@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace Intminds\GPS;
 
-use Intminds\GPS\Distance\DistanceCalcInterface;
-use Intminds\GPS\Distance\RoundEarthDistanceCalc;
+use Intminds\GPS\Movement\MovementCalcInterface;
+use Intminds\GPS\Movement\RoundEarthMovementCalc;
 
 class Defaults
 {
-    public static function getDistanceCalc(): DistanceCalcInterface
+    public static function getMovementCalc(): MovementCalcInterface
     {
-        return new RoundEarthDistanceCalc();
+        return new RoundEarthMovementCalc();
     }
 }
