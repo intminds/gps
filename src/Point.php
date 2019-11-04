@@ -14,11 +14,11 @@ class Point implements \IteratorAggregate, \ArrayAccess
      */
     public $lng;
     /**
-     * @var float|null
+     * @var ?float
      */
     public $alt;
     /**
-     * @var int|null
+     * @var ?int
      */
     public $time;
     /**
