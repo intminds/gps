@@ -20,7 +20,7 @@ final class DefaultDistanceCalcTest extends TestCase
      */
     private $points2;
 
-    public function setUp()
+    protected function setUp()
     {
         $this->points1 = new Points();
         $this->points1[] = new Point(1, 0);
