@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="GPS Track Editor" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gte="http://www.gpstrackeditor.com/xmlschemas/General/1" xmlns:gpxtpx="http://www.garmin.com/xmlschemas/TrackPointExtension/v1" xmlns:gpxx="http://www.garmin.com/xmlschemas/GpxExtensions/v3" targetNamespace="http://www.topografix.com/GPX/1/1" elementFormDefault="qualified" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<metadata>
+	<name>1.gpx</name>
+</metadata>
+<trk>
+	<name>Day 1</name>
+	<trkseg>
+		<trkpt lat="1.000000" lon="0.000000">
+			<ele>10.00</ele>
+			<time>2010-01-01T12:00:00Z</time>
+		</trkpt>
+		<trkpt lat="2.000000" lon="0.000000">
+			<ele>20.00</ele>
+			<time>2010-01-01T12:00:10Z</time>
+		</trkpt>
+		<trkpt lat="3.000000" lon="0.000000">
+			<ele>30.00</ele>
+			<time>2010-01-01T12:00:20Z</time>
+		</trkpt>
+		<extensions>
+			<gte:name>Part 1</gte:name>
+			<gte:color>#fbaf00</gte:color>
+		</extensions>
+	</trkseg>
+	<trkseg>
+		<trkpt lat="4.000000" lon="1.000000">
+			<ele>60.00</ele>
+			<time>2010-01-01T12:00:00Z</time>
+		</trkpt>
+		<trkpt lat="5.000000" lon="1.000000">
+			<ele>50.00</ele>
+			<time>2010-01-01T12:00:10Z</time>
+		</trkpt>
+		<trkpt lat="6.000000" lon="1.000000">
+			<ele>40.00</ele>
+			<time>2010-01-01T12:00:20Z</time>
+		</trkpt>
+		<extensions>
+			<gte:name>Part 2</gte:name>
+			<gte:color>#fbaf00</gte:color>
+		</extensions>
+	</trkseg>
+</trk>
+<trk>
+	<name>Day 2</name>
+	<trkseg>
+		<trkpt lat="6.000000" lon="1.000000">
+			<ele>40.00</ele>
+			<time>2010-01-02T12:00:00Z</time>
+		</trkpt>
+		<trkpt lat="7.000000" lon="1.000000">
+			<ele>50.00</ele>
+			<time>2010-01-02T12:00:10Z</time>
+		</trkpt>
+		<trkpt lat="8.000000" lon="1.000000">
+			<ele>60.00</ele>
+			<time>2010-01-02T12:00:20Z</time>
+		</trkpt>
+		<extensions>
+			<gte:name>#1</gte:name>
+			<gte:color>#ffb0ff</gte:color>
+		</extensions>
+	</trkseg>
+</trk>
+</gpx>

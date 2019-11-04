@@ -40,4 +40,23 @@ final class SegmentTest extends TestCase
             "points" => $s->getPoints(),
         ], iterator_to_array($s));
     }
+
+    public function testAppendPoint()
+    {
+        $p1 = new Point(4.0, 5.0, 6.0);
+        $s = new Segment("Title");
+        $s->appendPoint($p1);
+        $this->assertSame(1, sizeof($s->getPoints()));
+    }
+
+    public function testStartFinish()
+    {
+        $p1 = new Point(4.0, 5.0, 6.0);
+        $p2 = new Point(4.5, 5.5, 6.5);
+        $s = new Segment("Title");
+        $s->appendPoint($p1);
+        $s->appendPoint($p2);
+        $this->assertSame($p1, $s->getStart());
+        $this->assertSame($p2, $s->getFinish());
+    }
 }

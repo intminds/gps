@@ -151,13 +151,18 @@ final class PointsTest extends TestCase
     public function testAllPointsHaveProp()
     {
         $p1 = new Point(1, 2);
+        $p1["distance"] = 1000;
+        $p1["speed"] = 10.4;
         $p2 = new Point(3, 4, 100.0);
+        $p2["distance"] = 1002;
         $pp = new Points();
         $pp[] = $p1;
         $pp[] = $p2;
         $this->assertTrue($pp->allPointsHaveProp("lat"));
         $this->assertFalse($pp->allPointsHaveProp("alt"));
         $this->assertFalse($pp->allPointsHaveProp("time"));
+        $this->assertTrue($pp->allPointsHaveProp("distance"));
+        $this->assertFalse($pp->allPointsHaveProp("speed"));
         $this->assertFalse($pp->allPointsHaveProp("xxx"));
     }
 
