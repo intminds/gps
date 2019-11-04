@@ -9,7 +9,7 @@ use Intminds\GPS\Segment;
 use Intminds\GPS\Track;
 use PHPUnit\Framework\TestCase;
 
-final class TriangleElevationFilterProcessorTest extends TestCase
+final class TriangularElevationFilterProcessorTest extends TestCase
 {
     public function testApplyToTrack()
     {
@@ -32,7 +32,7 @@ final class TriangleElevationFilterProcessorTest extends TestCase
         // The triangle averaging window has a 444km base
         // Distance between points is 111km
         // => Adjacent points have averaging weight = 0.5
-        $proc = new TriangleElevationFilterProcessor(444000);
+        $proc = new TriangularElevationFilterProcessor(444000);
         $proc->applyToTrack($track);
         $this->assertEqualsWithDelta(40, $points1[0]->alt, 0.1); // (10x1 + 100x0.5) / (1 + 0.5)
         $this->assertEqualsWithDelta(55, $points1[1]->alt, 0.1); // (100x1 + 10x0.5 + 10x0.5) / (1 + 0.5 + 0.5)
@@ -54,7 +54,7 @@ final class TriangleElevationFilterProcessorTest extends TestCase
 
         $proc = new DistanceProcessor();
         $proc->applyToTrack($track);
-        $proc = new TriangleElevationFilterProcessor(); // Default window size > 0
+        $proc = new TriangularElevationFilterProcessor(); // Default window size > 0
         $proc->applyToTrack($track);
         $this->assertEqualsWithDelta(55, $points1[0]->alt, 0.1);
         $this->assertEqualsWithDelta(55, $points1[1]->alt, 0.1);
@@ -73,7 +73,7 @@ final class TriangleElevationFilterProcessorTest extends TestCase
 
         $proc = new DistanceProcessor();
         $proc->applyToTrack($track);
-        $proc = new TriangleElevationFilterProcessor(0); // Zero size window disables any averaging even for identical points
+        $proc = new TriangularElevationFilterProcessor(0); // Zero size window disables any averaging even for identical points
         $proc->applyToTrack($track);
         $this->assertEqualsWithDelta(10, $points1[0]->alt, 0.1);
         $this->assertEqualsWithDelta(100, $points1[1]->alt, 0.1);
@@ -91,7 +91,7 @@ final class TriangleElevationFilterProcessorTest extends TestCase
         $track->appendSegment((new Segment())->setPoints($points1));
 
         // DistanceProcessor is not applied
-        $proc = new TriangleElevationFilterProcessor();
+        $proc = new TriangularElevationFilterProcessor();
         $this->expectException(MissingPropException::class);
         $proc->applyToTrack($track);
     }

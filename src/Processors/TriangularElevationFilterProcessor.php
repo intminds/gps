@@ -5,7 +5,7 @@ namespace Intminds\GPS\Processors;
 
 use Intminds\GPS\Points;
 
-class TriangleElevationFilterProcessor extends AbstractProcessor implements ProcessorInterface
+class TriangularElevationFilterProcessor extends AbstractProcessor implements ProcessorInterface
 {
     /**
      * @var float
