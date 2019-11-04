@@ -130,5 +130,5 @@ echo "Elevation gain (advanced approach): {$ele->elevationGain} m, loss: {$ele->
 
 Algorithm adequacy check:
 
-For the `examples/run.gpx` file a popular app Strava gives elevation gain 229 m. It's slightly less than we received above (245 m). You can play with parameters but in our opinion Strava does too aggressive smoothing which lessens the total elevation gain. The values `$windowSize = 60.0` and `$minimalChange = 2.0` are based on comparison of 5 different tracks with Strava and manual elevation gain calculation for some tracks.    
+For the `examples/run.gpx` file a popular app Strava gives elevation gain 229 m. It's slightly less than we received above (245 m). You can play with the parameters but in our opinion Strava does too aggressive smoothing which lessens the total elevation gain. The values `$windowSize = 60.0` and `$minimalChange = 2.0` are based on comparison of 5 different tracks' elevations with Strava and manual elevation gain calculations for some tracks.    
 
