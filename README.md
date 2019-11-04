@@ -4,6 +4,35 @@ Lib for parsing .gpx files and working with GPS tracks.
 The main goal of this library is to be extendable.
 Almost all algorithms are implemented as strategies and can be replaced (distance calculation, elevation calculation, smoothing filters, etc.) 
 
+## Installation
+
+`composer require intminds/gps:"dev-master@dev"`
+
+Stable version is coming soon...
+
+## Features
+
+* Parsing tracks (`<trk>` tags) from .gpx file.
+* Support of multiple tracks in one gpx file.
+* Flattening (converting multiple tracks with multiple segments into one track with multiple segments).
+* Support of track titles and segment titles (segment titles - in [GPS Track Editor](http://www.gpstrackeditor.com/) format because there are no segment titles in the [original spec](https://www.topografix.com/gpx.asp)).
+* Start and Finish points for tracks and segments.
+* Bounding rectangle calculation for a track.
+* Distance calculation (1 algorithm provided, you can write your own).
+* Elevation calculation (2 algorithms provided, you can write your own).
+* Support of "processors" which can assign properties to track points (like distance, direction, speed), add and delete points from a track. Now implemented:
+  * `DistanceProcessor` assigns a "distance" property to each track point (distance from the start point).
+  * `ThinOutProcessor` removes points which are too close to each other (used to reduce a track size without significant information loss). 
+  * `TriangleElevationFilterProcessor` smooths points' altitudes using a triangular window filter.
+  * You can write more processors yourself.
+* 100% test coverage.
+
+### Not implemented
+
+* &#10060; Support of .gpx Trails and Waypoints (`<rte>` and `<wpt>` tags).
+* &#10060; Creating .gpx file back from GPXFile, Track, Segment and so on. 
+* &#10060; Smoothing of lat/lng.
+ 
 ## Basic usage example
 
 Run `php examples/basic.php` 
@@ -52,33 +81,3 @@ $movement = Defaults::getMovementCalc()->getDistance($track->getStart(), $track-
 echo "How far the finish point is from the start point: {$movement} m\n\n";
 // How far the finish point is from the start point: 21.724416911272 m
 ```
-
-## Installation
-
-`composer require intminds/gps:"dev-master@dev"`
-
-Stable version is coming soon...
-
-## Features
-
-* Parsing tracks (`<trk>` tags) from .gpx file.
-* Support of multiple tracks in one gpx file.
-* Flattening (converting multiple tracks with multiple segments into one track with multiple segments).
-* Support of track titles and segment titles (segment titles - in [GPS Track Editor](http://www.gpstrackeditor.com/) format because there are no segment titles in the [original spec](https://www.topografix.com/gpx.asp)).
-* Start and Finish points for tracks and segments.
-* Bounding rectangle calculation for a track.
-* Distance calculation (1 algorithm provided, you can write your own).
-* Elevation calculation (2 algorithms provided, you can write your own).
-* Support of "processors" which can assign properties to track points (like distance, direction, speed), add and delete points from a track. Now implemented:
-  * `DistanceProcessor` assigns a "distance" property to each track point (distance from the start point).
-  * `ThinOutProcessor` removes points which are too close to each other (used to reduce a track size without significant information loss). 
-  * `TriangleElevationFilterProcessor` smooths points' altitudes using a triangular window filter.
-  * You can write more processors yourself.
-* 100% test coverage.
-
-### Not implemented
-
-* &#10060; Support of .gpx Trails and Waypoints (`<rte>` and `<wpt>` tags).
-* &#10060; Creating .gpx file back from GPXFile, Track, Segment and so on. 
-* &#10060; Smoothing of lat/lng.
- 
