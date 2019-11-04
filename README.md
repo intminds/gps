@@ -1,6 +1,7 @@
 # gps
 
 [![Build Status](https://travis-ci.org/intminds/gps.svg?branch=master)](https://travis-ci.org/intminds/gps)
+[![Coverage Status](https://coveralls.io/repos/github/intminds/gps/badge.svg?branch=master)](https://coveralls.io/github/intminds/gps?branch=master)
 
 Lib for parsing .gpx files and working with GPS tracks.
 
