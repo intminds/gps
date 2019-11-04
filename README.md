@@ -88,7 +88,7 @@ There is a naive approach for elevation gain calculation. You can compare every 
 
 Such naive approach does not work well. If you go/run/ride along a flat surface, small non-important altitude changes sum up into big elevation gain and loss.
 
-Our experiments show that this is a no-so-bad algorithm for elevation calculation (run `php examples/elevation.php`):
+Our experiments show that this is a no-so-bad algorithm for elevation calculation which can be implemented using our library (run `php examples/elevation.php`):
 
 ```php
 declare(strict_types=1);
