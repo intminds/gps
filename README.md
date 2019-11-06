@@ -41,7 +41,7 @@ Stable version is coming soon...
 * &#10060; Support of .gpx Trails and Waypoints (`<rte>` and `<wpt>` tags).
 * &#10060; Creating .gpx file back from GPXFile, Track, Segment and so on. 
 * &#10060; Smoothing of lat/lng for better distance calculation.
-* &#10060; Statistics calculation (distance, elevation, etc.) can be applied only to Track and Segment/Points levels. No statistics for the whole GPX track if it has more than 1 track. Nevertheless, you can flatten tracks (convert all track into one track with multiple segments using GPXFile::flatten()) and calculate stats for the resulting track.
+* Statistics calculation (distance, elevation, etc.) can be applied only to Track and Segment/Points levels. No statistics for the whole GPX track if it has more than 1 track. Nevertheless, you can flatten tracks (convert all track into one track with multiple segments using GPXFile::flatten()) and calculate stats for the resulting track.
 
 We recommend using https://github.com/Sibyx/phpGPX if you need any of the above. Nevertheless, the phpGPX lib looks for us less extendable if you need to implement your own math.
 
