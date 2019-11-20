@@ -9,7 +9,7 @@ use Intminds\GPS\Segment;
 use Intminds\GPS\Track;
 use PHPUnit\Framework\TestCase;
 
-final class HysteresisElevationCalcTest extends TestCase
+final class ThresholdElevationCalcTest extends TestCase
 {
     public function testBasic()
     {
@@ -57,7 +57,7 @@ final class HysteresisElevationCalcTest extends TestCase
         $track->appendSegment((new Segment())->setPoints($points5));
         $track->appendSegment((new Segment())->setPoints($points6));
 
-        $c = new HysteresisElevationCalc(4.0);
+        $c = new ThresholdElevationCalc(4.0);
         $this->assertEqualsWithDelta(7, $c->calcPointsElevation($points1)->elevationGain, 0.01);
         $this->assertEqualsWithDelta(1, $c->calcPointsElevation($points1)->elevationLoss, 0.01);
         $this->assertEqualsWithDelta(0, $c->calcPointsElevation($points2)->elevationGain, 0.01);
@@ -86,7 +86,7 @@ final class HysteresisElevationCalcTest extends TestCase
         $points1[] = new Point(1, 0, 1.0);
         $points1[] = new Point(2, 0, 2.0);
 
-        $c = new HysteresisElevationCalc(4.0);
+        $c = new ThresholdElevationCalc(4.0);
         $this->expectException(\OutOfBoundsException::class);
         $c->calcPointsElevationWithOffset($points1, 2);
     }
@@ -119,7 +119,7 @@ final class HysteresisElevationCalcTest extends TestCase
         $track->appendSegment((new Segment())->setPoints($points3));
         $track->appendSegment((new Segment())->setPoints($points4));
 
-        $c = new HysteresisElevationCalc(0.0); // With 0.0 it should be identical to ElementaryElevationCalc
+        $c = new ThresholdElevationCalc(0.0); // With 0.0 it should be identical to ElementaryElevationCalc
         $this->assertEqualsWithDelta(8, $c->calcPointsElevation($points1)->elevationGain, 0.01);
         $this->assertEqualsWithDelta(2, $c->calcPointsElevation($points1)->elevationLoss, 0.01);
         $this->assertEqualsWithDelta(0, $c->calcPointsElevation($points2)->elevationGain, 0.01);

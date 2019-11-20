@@ -9,7 +9,7 @@ use Intminds\GPS\Segment;
 use Intminds\GPS\Track;
 use PHPUnit\Framework\TestCase;
 
-final class MedianHysteresisElevationCalcTest extends TestCase
+final class MedianThresholdElevationCalcTest extends TestCase
 {
     public function testBasic()
     {
@@ -41,7 +41,7 @@ final class MedianHysteresisElevationCalcTest extends TestCase
         $track->appendSegment((new Segment())->setPoints($points3));
         $track->appendSegment((new Segment())->setPoints($points4));
 
-        $c = new MedianHysteresisElevationCalc(4.0);
+        $c = new MedianThresholdElevationCalc(4.0);
 
         $e = $c->calcPointsElevation($points1);
         $this->assertGreaterThanOrEqual(6.0, $e->elevationGain);

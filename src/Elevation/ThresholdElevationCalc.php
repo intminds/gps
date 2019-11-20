@@ -6,7 +6,7 @@ namespace Intminds\GPS\Elevation;
 use Intminds\GPS\ElevationTotal;
 use Intminds\GPS\Points;
 
-class HysteresisElevationCalc extends AbstractElevationCalc
+class ThresholdElevationCalc extends AbstractElevationCalc
 {
     /**
      * @var float

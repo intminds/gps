@@ -6,7 +6,7 @@ namespace Intminds\GPS\Elevation;
 use Intminds\GPS\ElevationTotal;
 use Intminds\GPS\Points;
 
-class MedianHysteresisElevationCalc extends AbstractElevationCalc
+class MedianThresholdElevationCalc extends AbstractElevationCalc
 {
     /**
      * @var float
@@ -28,11 +28,11 @@ class MedianHysteresisElevationCalc extends AbstractElevationCalc
         $result = new ElevationTotal();
         $count = sizeof($points);
         if ($count >= 2) {
-            $hysteresis = new HysteresisElevationCalc($this->minimalChange);
+            $thresholdCalc = new ThresholdElevationCalc($this->minimalChange);
             $gains = [];
             $losses = [];
             for ($iter = 0; $iter < $this->repeatCount; ++$iter) {
-                $elevationTotal = $hysteresis->calcPointsElevationWithOffset($points, mt_rand(0, $count - 1));
+                $elevationTotal = $thresholdCalc->calcPointsElevationWithOffset($points, mt_rand(0, $count - 1));
                 $gains[$iter] = $elevationTotal->elevationGain;
                 $losses[$iter] = $elevationTotal->elevationLoss;
             }

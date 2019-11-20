@@ -103,7 +103,7 @@ declare(strict_types=1);
 namespace Intminds\GPS;
 
 use Intminds\GPS\Elevation\ElementaryElevationCalc;
-use Intminds\GPS\Elevation\HysteresisElevationCalc;
+use Intminds\GPS\Elevation\ThresholdElevationCalc;
 use Intminds\GPS\Processors\DistanceProcessor;
 use Intminds\GPS\Processors\TriangularElevationFilterProcessor;
 
@@ -127,7 +127,7 @@ $track->applyProcessor($proc1);
 $proc2 = new TriangularElevationFilterProcessor($windowSize = 60.0);
 $track->applyProcessor($proc2);
 // Applying a special elevation calculator which omits any altitude variations which are less than $minimalChange.
-$ele = $track->calcElevation(new HysteresisElevationCalc($minimalChange = 2.0));
+$ele = $track->calcElevation(new ThresholdElevationCalc($minimalChange = 2.0));
 echo "Elevation gain (advanced approach): {$ele->elevationGain} m, loss: {$ele->elevationLoss} m\n";
 // Elevation gain (advanced approach): 245.37668979092 m, loss: 247.98170342056 m
 ```
